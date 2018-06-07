@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的导航网站</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <header></header>
+    <main>
+        <div class="wrapper" id="main">
+
+        </div>
+    </main>
+    <footer></footer>
+    <script>
+        keys = {
+            '0': { '0': 'q', '1': 'w', '2': 'e', '3': 'r', '4': 't', '5': 'y', '6': 'u', '7': 'i', '8': 'o', '9': 'p', 'length': 10 },
+            '1': { '0': 'a', '1': 's', '2': 'd', '3': 'f', '4': 'g', '5': 'h', '6': 'j', '7': 'k', '8': 'l', 'length': 9 },
+            '2': { '0': 'z', '1': 'x', '2': 'c', '3': 'v', '4': 'b', '5': 'n', '6': 'm', 'length': 7 },
+            'length': 3
+        }
+        //后面重写hash的时候，因为keys的每个值都是大写的字母，所以如果点击
+        //M的修改，那么hash将会增加'M':xxxx，想要通过M键跳转的时候，还需要
+        //使用大写的M按键   
+        //为了方便用户,将按键值设为小写，在css中表现为大写
+        //这里每个按键永远只对应一个网址，修改后对应修改过后的网址
+        hash = {
+            'q': 'qq.com',
+            'w': 'weibo.com',
+            'e': 'ele.me',
+            't': 'tianya.com',
+            'y': 'yahoo.com',
+            'u': 'uc.com',
+            'i': 'iqiyi.com',
+            'o': 'opera.com',
+            'p': undefined
+        }
+        hashInlocalStorage=JSON.parse(localStorage.getItem('xxx')||'null')
+        if(hashInlocalStorage)
+        {
+            hash = hashInlocalStorage
+        }
+        index = 0
+        while (index < keys['length']) {  //index = 0 1 2
+            div = document.createElement('div') //创建div
+            main.appendChild(div)  //将div添加到<main>中
+            row = keys[index]  // 第一个数组 第二个数组 第三个数组 可用console.log(row)查看
+            index2 = 0
+            while (index2 < row['length']) {
+                kbd = document.createElement('kbd')
+                kbd.textContent = row[index2]//设置kbd内容
+               
+                button = document.createElement('button')
+                button.textContent = 'Edit'
+               
+                button.id = row[index2]
+                button.onclick = function (str) {
+                   key = str['target']['id'] //获得点击Edit时的button的id
+                  // console.log(str['target']['id'])
+                   x = prompt('输入网址')
+                   hash[key] = x
+                   localStorage.setItem('xxx',JSON.stringify(hash))
+                   console.log(hash)
+                }
+
+                kbd.appendChild(button)//将button添加到kbd
+                div.appendChild(kbd)//将kbd添加到div
+                index2 = index2 + 1
+            }
+            index = index + 1
+        }
+        document.onkeypress = function (str) {
+            key = str['key']
+            console.log(str)
+            website = hash[key]
+            // location.href="http://"+website
+            window.open('http://' + website, '_blank')
+        }
+    </script>
+</body>
+
+</html>
