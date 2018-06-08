@@ -6,13 +6,14 @@ a{
     text-decoration: none;
 }
 kbd{
-    border:1px solid red;
     width:65px;
     height:65px;
     display: inline-block;
     margin-right:20px;
     position: relative;
     text-transform: uppercase;
+    background: -webkit-linear-gradient(top, #f1f1f1 1%,#ffffff 45%,#f0f0f0 94%,#dddddd 95%,#dddddd 100%);
+    border-radius: 6px;
 }
 kbd > button{
     position:absolute;
@@ -34,4 +35,32 @@ main>div{
 }
 main{
     text-align: center;
+}
+.key{
+         width:100px;
+         height:80px;
+         background: linear-gradient(to bottom, #292929 1%,#111111 100%); 
+         color:#C5C5C5;
+         border-radius: 7px; 
+         box-shadow: 0 0 0 1px #1A1B1C,0 0 0 2px #1F2020,0 3px 0 2px #080808; 
+         display:inline-flex;
+         align-items: center;
+         justify-content: center;
+         border:1px solid #373737;
+         font-family:Helvetica;
+         font-size: 23px;
+        
+}
+main > .wrapper >.row{
+    margin:16px;
+
+}
+.row >.key{
+    margin:0 6px;
+}
+main >.wrapper> div:nth-child(2){
+    margin-left: -50px;
+}
+main >.wrapper> div:nth-child(3){
+    margin-left: -150px;
 }

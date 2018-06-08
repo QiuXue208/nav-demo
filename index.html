@@ -48,13 +48,14 @@
         index = 0
         while (index < keys['length']) {  //index = 0 1 2
             div = document.createElement('div') //创建div
+            div.className='row'
             main.appendChild(div)  //将div添加到<main>中
             row = keys[index]  // 第一个数组 第二个数组 第三个数组 可用console.log(row)查看
             index2 = 0
             while (index2 < row['length']) {
                 kbd = document.createElement('kbd')
                 kbd.textContent = row[index2]//设置kbd内容
-               
+                kbd.className='key'
                 button = document.createElement('button')
                 button.textContent = 'Edit'
                
