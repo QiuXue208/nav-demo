@@ -18,69 +18,139 @@
     </main>
     <footer></footer>
     <script>
-        keys = {
-            '0': { '0': 'q', '1': 'w', '2': 'e', '3': 'r', '4': 't', '5': 'y', '6': 'u', '7': 'i', '8': 'o', '9': 'p', 'length': 10 },
-            '1': { '0': 'a', '1': 's', '2': 'd', '3': 'f', '4': 'g', '5': 'h', '6': 'j', '7': 'k', '8': 'l', 'length': 9 },
-            '2': { '0': 'z', '1': 'x', '2': 'c', '3': 'v', '4': 'b', '5': 'n', '6': 'm', 'length': 7 },
-            'length': 3
-        }
-        //后面重写hash的时候，因为keys的每个值都是大写的字母，所以如果点击
-        //M的修改，那么hash将会增加'M':xxxx，想要通过M键跳转的时候，还需要
-        //使用大写的M按键   
-        //为了方便用户,将按键值设为小写，在css中表现为大写
-        //这里每个按键永远只对应一个网址，修改后对应修改过后的网址
-        hash = {
-            'q': 'qq.com',
-            'w': 'weibo.com',
-            'e': 'ele.me',
-            't': 'tianya.com',
-            'y': 'yahoo.com',
-            'u': 'uc.com',
-            'i': 'iqiyi.com',
-            'o': 'opera.com',
-            'p': undefined
-        }
-        hashInlocalStorage=JSON.parse(localStorage.getItem('xxx')||'null')
-        if(hashInlocalStorage)
-        {
-            hash = hashInlocalStorage
-        }
-        index = 0
-        while (index < keys['length']) {  //index = 0 1 2
-            div = document.createElement('div') //创建div
-            div.className='row'
-            main.appendChild(div)  //将div添加到<main>中
-            row = keys[index]  // 第一个数组 第二个数组 第三个数组 可用console.log(row)查看
-            index2 = 0
-            while (index2 < row['length']) {
-                kbd = document.createElement('kbd')
-                kbd.textContent = row[index2]//设置kbd内容
-                kbd.className='key'
-                button = document.createElement('button')
-                button.textContent = 'Edit'
-               
-                button.id = row[index2]
-                button.onclick = function (str) {
-                   key = str['target']['id'] //获得点击Edit时的button的id
-                  // console.log(str['target']['id'])
-                   x = prompt('输入网址')
-                   hash[key] = x
-                   localStorage.setItem('xxx',JSON.stringify(hash))
-                   console.log(hash)
-                }
 
-                kbd.appendChild(button)//将button添加到kbd
-                div.appendChild(kbd)//将kbd添加到div
-                index2 = index2 + 1
+        // 1. 初始化数据
+        var hashAndKeysInit = init()
+        var hash = hashAndKeysInit['hash']
+        var keys = hashAndKeysInit['keys']
+
+        // 2.生成键盘
+        //遍历keys，生成kbd标签
+        generateKeyBoard(keys, hash)
+
+        // 3.监听用户动作
+        listenToUser(hash)
+
+        //下面是工具函数
+        function init() {
+            //不用var 表明为全局变量 容易覆盖
+            var keys = {
+                '0': { '0': 'q', '1': 'w', '2': 'e', '3': 'r', '4': 't', '5': 'y', '6': 'u', '7': 'i', '8': 'o', '9': 'p', 'length': 10 },
+                '1': { '0': 'a', '1': 's', '2': 'd', '3': 'f', '4': 'g', '5': 'h', '6': 'j', '7': 'k', '8': 'l', 'length': 9 },
+                '2': { '0': 'z', '1': 'x', '2': 'c', '3': 'v', '4': 'b', '5': 'n', '6': 'm', 'length': 7 },
+                'length': 3
             }
-            index = index + 1
+            //后面重写hash的时候，因为keys的每个值都是大写的字母，所以如果点击
+            //M的修改，那么hash将会增加'M':xxxx，想要通过M键跳转的时候，还需要
+            //使用大写的M按键   
+            //为了方便用户,将按键值设为小写，在css中表现为大写
+            //这里每个按键永远只对应一个网址，修改后对应修改过后的网址
+            var hash = {
+                'q': 'qq.com',
+                'w': 'weibo.com',
+                'e': 'ele.me',
+                't': 'tianya.com',
+                'y': 'yahoo.com',
+                'u': 'uc.com',
+                'i': 'iqiyi.com',
+                'o': 'opera.com',
+                'p': undefined
+            }
+            //取出localStorage中xxx对应的hash
+            var hashInlocalStorage = JSON.parse(localStorage.getItem('xxx') || 'null')
+            if (hashInlocalStorage) {
+                hash = hashInlocalStorage
+            }
+            return {
+                "hash": hash,
+                "keys": keys
+            }
         }
-        document.onkeypress = function (str) {
-            key = str['key']
-            console.log(str)
-            website = hash[key]
-            // location.href="http://"+website
-            window.open('http://' + website, '_blank')
+
+        function generateKeyBoard(keys, hash) {
+
+            for (var index = 0; index < keys['length']; index++) {//index = 0 1 2
+                var div = createTag('div') //创建div
+                //var div = document.createElement('div)
+                div.className = 'row'
+                main.appendChild(div)  //将div添加到<main>中
+
+                var row = keys[index]  // 第一个数组 第二个数组 第三个数组 可用console.log(row)查看
+                for (var index2 = 0; index2 < row['length']; index2++) {
+
+                    var span = createSpan(row[index2])
+
+                    var button = createButton(row[index2])
+
+                    var img = createImg(hash[row[index2]])
+
+                    var kbd = createTag('kbd')
+                    
+                    //kbd.textContent = row[index2]//设置kbd内容
+                    kbd.className = 'key'
+                    kbd.appendChild(span)
+                    kbd.appendChild(img)
+                    kbd.appendChild(button)//将button添加到kbd
+
+                    div.appendChild(kbd)//将kbd添加到div
+                }
+            }
+
+        }
+
+        function createTag(tagName) {
+            return element = document.createElement(tagName)
+        }
+
+        function createSpan(textContent) {
+            var span = createTag('span')
+            span.textContent = textContent
+            span.className = 'text'
+            return span
+        }
+
+        function createButton(id) {
+            var button = createTag('button')
+            button.textContent = 'Edit'
+            button.id = id
+            button.onclick = function (str) {
+                var button2 = str['target']
+                var img2 = button2.previousSibling
+                var key = button2['id'] //获得点击Edit时的button的id
+                // console.log(str['target']['id'])
+                var x = prompt('输入网址')
+                hash[key] = x
+                img2.src = 'http://' + x + '/favicon.ico'
+                img2.onerror = function (e) {
+                    e.target.src = '//i.loli.net/2018/06/09/5b1b681211715.png'
+                }
+                localStorage.setItem('xxx', JSON.stringify(hash))
+                //  console.log(hash)
+            }
+            return button
+        }
+
+        function createImg(domain) {
+            var img = createTag('img')
+            if (domain) {
+                img.src = 'http://' + domain + '/favicon.ico'
+            }
+            else {
+                img.src = '//i.loli.net/2018/06/09/5b1b681211715.png'
+            }
+            img.onerror = function (e) {
+                e.target.src = '//i.loli.net/2018/06/09/5b1b681211715.png'
+            }
+            return img
+        }
+        function listenToUser(hash) {
+            document.onkeypress = function (str) {
+                var key = str['key']
+                // console.log(str)
+                var website = hash[key]
+                // location.href="http://"+website
+                window.open('http://' + website, '_blank')
+            }
         }
     </script>
 </body>
