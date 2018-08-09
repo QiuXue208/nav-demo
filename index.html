@@ -51,7 +51,7 @@
                 'e': 'ele.me',
                 't': 'tianya.com',
                 'y': 'yahoo.com',
-                'u': 'uc.com',
+                'u': 'www.uc.cn',
                 'i': 'iqiyi.com',
                 'o': 'opera.com',
                 'p': undefined
@@ -122,7 +122,8 @@
                 hash[key] = x
                 img2.src = 'http://' + x + '/favicon.ico'
                 img2.onerror = function (e) {
-                    e.target.src = '//i.loli.net/2018/06/09/5b1b681211715.png'
+                    e.target.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+                    //e.target.src = '//i.loli.net/2018/06/09/5b1b681211715.png'
                 }
                 localStorage.setItem('xxx', JSON.stringify(hash))
                 //  console.log(hash)
@@ -136,10 +137,12 @@
                 img.src = 'http://' + domain + '/favicon.ico'
             }
             else {
-                img.src = '//i.loli.net/2018/06/09/5b1b681211715.png'
+                img.src = ' e.target.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png''
+               // img.src = '//i.loli.net/2018/06/09/5b1b681211715.png'
             }
             img.onerror = function (e) {
-                e.target.src = '//i.loli.net/2018/06/09/5b1b681211715.png'
+                e.target.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+               // e.target.src = '//i.loli.net/2018/06/09/5b1b681211715.png'
             }
             return img
         }
